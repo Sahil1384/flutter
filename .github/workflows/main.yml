@@ -24,7 +24,7 @@ jobs:
       - name: Build APK
         run: flutter build apk
 
-      - name: Deploy to EC2
+      - name: ssh to instance
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
