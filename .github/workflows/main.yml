@@ -20,7 +20,7 @@ jobs:
 
       - name: Clone and Set up Flutter Project
         run: |
-          mkdir -p $GITHUB_WORKSPACE/testing_flutter
+          sudo mkdir -p $GITHUB_WORKSPACE/testing
           git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
           cd $GITHUB_WORKSPACE/testing_flutter
           flutter config --no-analytics
