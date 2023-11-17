@@ -25,6 +25,7 @@ jobs:
           flutter config --no-analytics &&
           flutter pub get &&
           flutter run -d
+          shell: bash
 
 
       - name: Build APK
