@@ -15,15 +15,13 @@ jobs:
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
 
       - name: Clone and Set up Flutter Project
         run: |
           sudo mkdir -p testing_flutter &&
-          cd testing_flutter &&
           git clone https://github.com/Sahil1384/flutter.git
           cd flutter &&
+          cp -R * /home/ubuntu/testing_flutter &&
           flutter config --no-analytics &&
           flutter pub get &&
           flutter run -d
