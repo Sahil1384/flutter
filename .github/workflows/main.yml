@@ -18,15 +18,15 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Dependencies (New)
+      - name: Clone Flutter Project
         run: |
-          cd /home/ubuntu/testing_flutter  # Replace '***' with the correct directory name
+          git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing_flutter
           flutter pub get
 
       - name: Git Clone and Run
         run: |
-          git clone https://github.com/Sahil1384/flutter.git
-          cd flutter
+          cd /home/ubuntu/testing_flutter
           flutter run -d
 
       - name: Build APK
@@ -40,5 +40,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
-            # Restart Nginx (replace 'nginx' with 'apache2' if you're using Apache)
             ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
