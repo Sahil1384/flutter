@@ -18,7 +18,7 @@ jobs:
 
       - name: Clone and Set up Flutter Project
         run: |
-          sudo mkdir -p testing_flutter &&
+          sudo mkdir testing_flutter &&
           git clone https://github.com/Sahil1384/flutter.git
           cd flutter &&
           cp -R * /home/ubuntu/testing_flutter &&
