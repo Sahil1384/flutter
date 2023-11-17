@@ -18,16 +18,21 @@ jobs:
         with:
           channel: 'stable'
 
-      - name:: Install Dependencies
+      - name: Install Dependencies (New)
         run: |
           cd /home/ubuntu/testing_flutter
           flutter pub get
+
       - name: Git Clone and Run
         run: |
-          cd /home/ubuntu &&
-          git clone https://github.com/Sahil1384/flutter.git &&
-          cd flutter &&
+          git clone https://github.com/Sahil1384/flutter.git
+          cd flutter
           flutter run -d
+
+      - name: Additional Setup
+        run: |
+          # Add any additional setup commands here
+          echo "Running additional setup..."
 
       - name: Build APK
         run: flutter build apk
@@ -40,4 +45,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
-            ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart your-web-server'
+            # Restart Nginx (replace 'nginx' with 'apache2' if you're using Apache)
+            ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
