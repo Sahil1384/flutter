@@ -18,26 +18,31 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Clone Flutter Project
+      - name: Clone and Set up Flutter Project
         run: |
+          # Create the directory if it doesn't exist
+          mkdir -p /home/ubuntu/testing
+          
+          # Clone the Flutter project and install dependencies
           git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
-          cd /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing
           flutter pub get
 
       - name: Git Clone and Run
         run: |
-          cd /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing
           flutter run -d
 
       - name: Build APK
         run: flutter build apk
 
-      - name: ssh to instance
+      - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            # Copy the APK to the server and restart nginx
             scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
             ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
