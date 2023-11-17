@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Dependencies (New)
         run: |
-          cd /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing_flutter  # Replace '***' with the correct directory name
           flutter pub get
 
       - name: Git Clone and Run
@@ -28,11 +28,6 @@ jobs:
           git clone https://github.com/Sahil1384/flutter.git
           cd flutter
           flutter run -d
-
-      - name: Additional Setup
-        run: |
-          # Add any additional setup commands here
-          echo "Running additional setup..."
 
       - name: Build APK
         run: flutter build apk
