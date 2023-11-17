@@ -21,55 +21,6 @@ jobs:
       - name: Clone and Set up Flutter Project
         run: |
           sudo mkdir -p $GITHUB_WORKSPACE/testing_flutter
-          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/testing_flutter
-          git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
-          cd $GITHUB_WORKSPACE/testing_flutter
-          flutter config --no-analytics
-          flutter pub get
-
-      - name: Git Clone and Run
-        run: |
-          cd $GITHUB_WORKSPACE/testing_flutter
-          flutter run -d
-
-      - name: Build APK
-        run: |
-          cd $GITHUB_WORKSPACE/testing_flutter
-          flutter build apk
-
-      - name: Deploy to Server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
-            ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
-name: Deploy Flutter
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      - name: Clone and Set up Flutter Project
-        run: |
-          sudo mkdir -p $GITHUB_WORKSPACE/testing_flutter
-          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/testing_flutter
           git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
           cd $GITHUB_WORKSPACE/testing_flutter
           flutter config --no-analytics
