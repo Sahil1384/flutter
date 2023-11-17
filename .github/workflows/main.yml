@@ -20,17 +20,15 @@ jobs:
 
       - name: Clone and Set up Flutter Project
         run: |
-          # Create the directory if it doesn't exist
-          sudo mkdir -p /home/ubuntu/testing
-          
-          # Clone the Flutter project and install dependencies
-          git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
-          cd /home/ubuntu/testing
+          mkdir -p $GITHUB_WORKSPACE/testing_flutter
+          git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
+          cd $GITHUB_WORKSPACE/testing_flutter
+          flutter config --no-analytics
           flutter pub get
 
       - name: Git Clone and Run
         run: |
-          cd /home/ubuntu/testing
+          cd $GITHUB_WORKSPACE/testing_flutter
           flutter run -d
 
       - name: Build APK
@@ -43,6 +41,5 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Copy the APK to the server and restart nginx
             scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
             ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
