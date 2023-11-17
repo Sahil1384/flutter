@@ -28,11 +28,6 @@ jobs:
           cd flutter &&
           flutter run -d
 
-      - name: Additional Setup
-        run: |
-          # Add any additional setup commands here
-          echo "Running additional setup..."
-
       - name: Build APK
         run: flutter build apk
 
