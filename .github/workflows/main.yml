@@ -18,9 +18,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
-
+      - name:: Install Dependencies
+        run: |
+          cd /home/ubuntu/testing_flutter
+          flutter pub get
       - name: Git Clone and Run
         run: |
           cd /home/ubuntu &&
