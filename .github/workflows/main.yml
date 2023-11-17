@@ -18,9 +18,9 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Clone and Set up Flutter Project
+      - name: Clone and Set up Flutter Project Directory
         run: |
-          sudo mkdir -p $GITHUB_WORKSPACE/testing
+          mkdir -p $GITHUB_WORKSPACE/testing_flutter
           git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
           cd $GITHUB_WORKSPACE/testing_flutter
           flutter config --no-analytics
@@ -32,7 +32,9 @@ jobs:
           flutter run -d
 
       - name: Build APK
-        run: flutter build apk
+        run: |
+          cd $GITHUB_WORKSPACE/testing_flutter
+          flutter build apk
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
