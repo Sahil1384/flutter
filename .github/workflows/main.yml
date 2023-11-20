@@ -20,7 +20,7 @@ jobs:
       - name: Clone and Set up Flutter Project
         run: |
           # Create the directory if it doesn't exist
-          mkdir /home/ubuntu/testing_flutter
+          mkdir -p /home/ubuntu/testing_flutter
           
           # Clone the Flutter project and install dependencies
           cd /home/ubuntu/testing_flutter
