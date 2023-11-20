@@ -1,4 +1,4 @@
-name: Deploy Flutter
+name: Deploy Flutter 
 
 on:
   push:
