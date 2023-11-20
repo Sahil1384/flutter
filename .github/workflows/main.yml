@@ -30,7 +30,7 @@ jobs:
       - name: Git Clone and Run
         run: |
           cd /home/ubuntu/testing_flutter
-          flutter run -d
+          flutter run -d  web
 
       - name: Build APK
         run: flutter build apk
