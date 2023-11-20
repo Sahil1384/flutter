@@ -20,17 +20,14 @@ jobs:
       - name: Clone and Set up Flutter Project
         run: |
           # Create the directory if it doesn't exist
-          # mkdir -p /home/ubuntu/testing_flutter
+          mkdir /home/ubuntu/testing_flutter
           
           # Clone the Flutter project and install dependencies
-          git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing_flutter
+          git clone https://github.com/Sahil1384/flutter.git 
+          cp -R * /home/ubuntu/testing_flutter/
           cd /home/ubuntu/testing_flutter
           flutter pub get
-
-      - name: Git Clone and Run
-        run: |
-          cd /home/ubuntu/testing_flutter
-          flutter run -d
 
       - name: Build APK
         run: flutter build apk
