@@ -1,36 +1,47 @@
+name: Deploy Flutter
+
 on:
   push:
     branches:
       - main
 
-name: "Build & Release"
 jobs:
-  build:
-    name: Build & Release
-    runs-on: macos-latest
+  deploy:
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - uses: subosito/flutter-action@v1
-        with:
-          flutter-version: '2.2.0'
-      - run: flutter pub get
-      - run: flutter test
-      - run: flutter build apk --debug --split-per-abi
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
       
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
+
+      - name: Clone and Set up Flutter Project
+        run: |
+          # Create the directory if it doesn't exist
+          # mkdir -p /home/ubuntu/testing_flutter
+          
+          # Clone the Flutter project and install dependencies
+          git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing_flutter
+          flutter pub get
+
+      - name: Git Clone and Run
+        run: |
+          cd /home/ubuntu/testing_flutter
+          flutter run -d
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
         with:
-          artifacts: "build/app/outputs/apk/debug/*"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.FLUTTER_TOKEN }}
-
-
-
-
-
-
-# push to master, main, develop
-# pull request on main master
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Copy the APK to the server and restart nginx
+            scp -i /tmp/private_key.pem -o StrictHostKeyChecking=no -r build/app/outputs/flutter-apk/app-release.apk ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }}:/home/ubuntu
+            ssh -i /tmp/private_key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.SSH_HOST }} 'sudo systemctl restart nginx'
