@@ -20,15 +20,16 @@ jobs:
 
       - name: Clone Flutter Project
         run: |
-          sudo mkdir -p $GITHUB_WORKSPACE/testing_flutter
-          git clone https://github.com/Sahil1384/flutter.git $GITHUB_WORKSPACE/testing_flutter
-          cd $GITHUB_WORKSPACE/testing_flutter
+          sudo mkdir -p /home/ubuntu/testing_flutter
+          sudo chown -R $USER:$USER /home/ubuntu/testing_flutter
+          git clone https://github.com/Sahil1384/flutter.git /home/ubuntu/testing_flutter
+          cd /home/ubuntu/testing_flutter
           flutter config --no-analytics
           flutter pub get
 
       - name: Git Clone and Run
         run: |
-          cd $GITHUB_WORKSPACE/testing_flutter
+          cd /home/ubuntu/testing_flutter
           flutter run -d
 
       - name: Build APK
